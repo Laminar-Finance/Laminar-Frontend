@@ -11,6 +11,10 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
+      rpc: {
+        137: "https://polygon-rpc.com/",
+      },
+      network: "matic",
       infuraId: "460f40a260564ac4a4f4b3fffb032dad" // required
     }
   },
@@ -19,8 +23,8 @@ const providerOptions = {
     options: {
       appName: "Laminar Finance", // Required
       infuraId: "460f40a260564ac4a4f4b3fffb032dad", // Required
-      rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-      chainId: 1, // Optional. It defaults to 1 if not provided
+      rpc: "https://polygon-rpc.com/", // Optional if `infuraId` is provided; otherwise it's required
+      chainId: 137, // Optional. It defaults to 1 if not provided
       darkMode: false // Optional. Use dark theme, defaults to false
     }
   }
@@ -29,8 +33,8 @@ const providerOptions = {
 let web3Modal
 if (typeof window !== 'undefined') {
   web3Modal = new Web3Modal({
-    network: 'mainnet', // optional
-    cacheProvider: true,
+    network: 'matic', // optional
+    cacheProvider: false,
     providerOptions, // required
   })
 }
@@ -88,8 +92,25 @@ export default function Home() {
 
     const signer = web3Provider.getSigner()
     const address = await signer.getAddress()
+    console.log(address)
 
     const network = await web3Provider.getNetwork()
+    console.log(network)
+
+    provider.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+          chainId: "0x89",
+          rpcUrls: ["https://polygon-rpc.com/"],
+          chainName: "Matic Mainnet",
+          nativeCurrency: {
+              name: "MATIC",
+              symbol: "MATIC",
+              decimals: 18
+          },
+          blockExplorerUrls: ["https://polygonscan.com/"]
+      }]
+  });
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -127,7 +148,9 @@ export default function Home() {
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
       const handleChainChanged = (_hexChainId) => {
-        window.location.reload()
+        if(_hexChainId !== "0x89") {
+          window.location.reload()
+        }
       }
 
       const handleDisconnect = (error) => {
@@ -174,6 +197,9 @@ export default function Home() {
             Connect
           </button>
         )}
+
+        <p>{address}</p>
+
 
         <p className={styles.description}>
           Get started by editing{' '}
