@@ -56,7 +56,7 @@ const WalletContextProvider = ({ children }: WalletProviderProps) => {
     // If it is a valid web-app, we configure a web3Modal instance
     if (typeof window !== "undefined") {
       const newModal = new Web3Modal({
-        network: "mainnet", // optional
+        network: process.env.NEXT_PUBLIC_NETWORK, // optional
         cacheProvider: true,
         providerOptions, // required
       });

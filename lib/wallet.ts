@@ -40,6 +40,23 @@ export const connectWallet = (web3Modal, dispatch) => {
 
     const network = await web3Provider.getNetwork();
 
+    if(network.chainId != parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)){
+      provider.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+            chainId: ethers.utils.hexValue(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)),
+            rpcUrls: [process.env.NEXT_PUBLIC_RPC_URL],
+            chainName: process.env.NEXT_PUBLIC_NETWORK,
+            nativeCurrency: {
+                name: "MATIC",
+                symbol: "MATIC",
+                decimals: 18
+            },
+            blockExplorerUrls: ["https://polygonscan.com/"]
+        }]
+      });
+    }
+
     dispatch({
       type: "SET_WEB3_PROVIDER",
       payload: {

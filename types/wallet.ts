@@ -52,6 +52,10 @@ export const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
+      rpc: {
+        [process.env.NEXT_PUBLIC_CHAIN_ID]: process.env.NEXT_PUBLIC_RPC_URL,
+      },
+      network: process.env.NEXT_PUBLIC_NETWORK,
       infuraId: process.env.INFURA_ID, // required
     },
   },
@@ -60,8 +64,8 @@ export const providerOptions = {
     options: {
       appName: "Laminar Finance", // Required
       infuraId: process.env.INFURA_ID, // Required
-      rpc: "", // Optional if `infuraId` is provided; otherwise it's required
-      chainId: 1, // Optional. It defaults to 1 if not provided
+      rpc: process.env.NEXT_PUBLIC_RPC_URL, // Optional if `infuraId` is provided; otherwise it's required
+      chainId: process.env.NEXT_PUBLIC_CHAIN_ID, // Optional. It defaults to 1 if not provided
       darkMode: false, // Optional. Use dark theme, defaults to false
     },
   },
