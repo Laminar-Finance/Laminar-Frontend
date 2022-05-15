@@ -14,6 +14,10 @@ const AuthenticatedRoute = ({
   const { isConnected } = useWalletProvider();
   const router = useRouter();
 
+  if (typeof window === "undefined") {
+    return children;
+  }
+
   if (!isConnected) {
     router.push(redirectRoute || "/");
   }
