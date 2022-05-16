@@ -7,6 +7,10 @@ import { PAYMENT_RECEIVER } from "../contracts";
 
 const Home = () => {
   const { walletState } = useWalletProvider();
+  if(!walletState) {
+    return <div>Loading...</div>
+  }
+  
   const prContract = new ethers.Contract(PAYMENT_RECEIVER.address, PAYMENT_RECEIVER.abi, walletState.web3Provider);
 
   const [gates, setGates] = useState([]);
