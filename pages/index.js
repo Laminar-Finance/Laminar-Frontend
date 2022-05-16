@@ -7,6 +7,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import { useWalletProvider } from "../context/WalletProvider";
+import { connect } from "../context/LaminarCore";
 
 export default function Home() {
   const { connectWallet, disconnectWallet, isConnected } = useWalletProvider();
@@ -32,6 +33,10 @@ export default function Home() {
             Connect
           </button>
         )}
+
+        <button onClick={connect}>
+          hatersgonnahates
+        </button>
 
         <p className={styles.description}>
           Get started by editing{" "}
