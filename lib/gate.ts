@@ -62,6 +62,11 @@ export async function connect(walletState) {
   // letter, and, even more bizarrely, sometimes this is enough to make a query fail.
   const gates = await backend.getGates(walletState.address.toLowerCase());
   console.log("gates", gates);
+  
+  // await backend.addGate(walletState.web3Provider.getSigner(), "happy gate", "", 1)
+  // console.log("made gate");
+
+
 
   // console.log("starting query");
 

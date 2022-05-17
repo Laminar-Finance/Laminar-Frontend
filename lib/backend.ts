@@ -1,6 +1,7 @@
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import { recoverAddress } from "ethers/lib/utils";
 import { Client } from "urql";
+// import {JsonRpcSigner} from ""
 
 
 interface Gate {
@@ -23,7 +24,7 @@ interface Flow {
 interface IBackend {
     getGates(address: string): Promise<Gate[]>, 
     getGate(address: string, gateId: number),
-    addGate(signer: any, name: string, token: string, flowRate: number),
+    addGate(signer: Signer, name: string, token: string, flowRate: number),
     deleteGate(gateId: string),
 }
 
@@ -66,7 +67,6 @@ export class Backend implements IBackend {
             this.getStreamsQuery, 
             {r: receiverAddress}
         ).toPromise(); 
-        console.log("response", response);
         
         const streams = response.data.streams;
         const gates: Gate[] = [];
@@ -101,6 +101,8 @@ export class Backend implements IBackend {
             for (let k = 0; k < streams.length; k++) {
                 const stream = streams[k];
                 
+                console.log("comparing", stream.sender, userAddress);
+
                 // TODO: add some kind of test to ensure that the stream is currenlty active
                 if (stream.sender.id == userAddress) {
                     gateFlows.push({
@@ -118,7 +120,7 @@ export class Backend implements IBackend {
     }
 
     async getGate(address: string, gateId: number) {}
-    async addGate(signer: any, name: string, token: string, flowRate: number) {
+    async addGate(signer: Signer, name: string, token: string, flowRate: number) {
         await this.pr.connect(signer).addGate(name, flowRate);
     }
     async deleteGate(gateId: string) {}
