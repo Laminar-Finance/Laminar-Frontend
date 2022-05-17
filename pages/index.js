@@ -1,11 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { ethers } from "ethers";
-import React, { useCallback, useReducer, useState, useEffect } from "react";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import React from "react";
+import GenericLayout from "../layouts/GenericLayout";
 import { useWalletProvider } from "../context/WalletProvider";
 import NextLink from "next/link";
 import GenericLayout from "../layouts/GenericLayout";

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
 
 type AuthenticatedRouteProps = {
@@ -14,15 +14,17 @@ const AuthenticatedRoute = ({
   const { isConnected } = useWalletProvider();
   const router = useRouter();
 
-  if (typeof window === "undefined") {
-    return children;
+  useEffect(() => {
+    if (!isConnected) {
+      router.push("/");
+    }
+  }, [isConnected]);
+
+  if (isConnected) {
+    return <>{children}</>;
   }
 
-  if (!isConnected) {
-    router.push(redirectRoute || "/");
-  }
-
-  return <>{children}</>;
+  return null;
 };
 
 export default AuthenticatedRoute;
