@@ -1,9 +1,12 @@
+import { recoverAddress } from "ethers/lib/utils";
+import { Client } from "urql";
+
 
 interface Gate {
     name: string,
     payee: string,
     activeFlows: Flow[],
-    geteId: number,
+    id: number,
     gateAddress: string // not currently needed,
 }
 
@@ -13,14 +16,102 @@ interface Flow {
     startBlockNumber: number,
     flowRate: number, 
     id: number
-    flowRateUpdaetEvents: any[],
+    flowUpdatedEvents: any[],
 }
 
 interface IBackend {
-    getGates(address: string): Gate[], 
+    getGates(address: string): Promise<Gate[]>, 
     getGate(address: string, gateId: number),
     addGate(name: string, token: string, flowRate: number),
     deleteGate(gateId: string),
+}
+
+class Backend implements IBackend {
+    getStreamsQuery = `
+    query getAccounts($receiver: String) {
+        streams(where: {receiver: $receiver}) {
+          id
+          streamedUntilUpdatedAt
+          updatedAtBlockNumber
+          updatedAtTimestamp
+          createdAtBlockNumber
+          createdAtTimestamp
+          currentFlowRate
+          deposit
+          sender {
+            id
+          }
+          flowUpdatedEvents {
+            oldFlowRate
+            flowRate
+            blockNumber
+            totalAmountStreamedUntilTimestamp
+            timestamp
+          }
+        }
+      }
+    `;
+    
+
+    gql: Client;
+    pr: any;
+    constructor(graphQLClient: Client, prContract: any) {
+        this.gql = graphQLClient;
+        this.pr = prContract;
+    }
+
+    async getGates(receiverAddress: string): Promise<Gate[]> {
+        const response = await this.gql.query(this.getStreamsQuery, {receiver: receiverAddress}).toPromise(); 
+        
+        const streams = response.data.streams;
+        const gates: Gate[] = [];
+
+        const rawGates = await this.pr.getGates(receiverAddress);
+
+        for (let index = 0; index < rawGates.length; index++) {
+            const g = rawGates[index];
+
+            gates.push({
+                name: g.name,
+                payee: receiverAddress,
+                activeFlows: this.getFlows(g, streams),
+                id: 0,
+                gateAddress: ""
+            })   
+        }       
+
+
+        return gates;
+    }
+
+    getFlows(rawGateData: any, streams: any): Flow[] {
+        const gateFlows: Flow[] = [];
+
+        for (let j = 0; j < rawGateData.activeUsers.length; j++) {
+            const userAddress = rawGateData.activeUsers[j];
+            
+            for (let k = 0; k < streams.length; k++) {
+                const stream = streams[k];
+                
+                // TODO: add some kind of test to ensure that the stream is currenlty active
+                if (stream.sender.id == userAddress) {
+                    gateFlows.push({
+                        payer: userAddress,
+                        startTimestamp: stream.createdAtTimestamp,
+                        startBlockNumber: stream.createdAtTimestamp,
+                        flowRate: stream.currentFlowRate,
+                        id: stream.id,
+                        flowUpdatedEvents: stream.flowUpdatedEvents
+                    })
+                }
+            }
+        }
+        return gateFlows;
+    }
+
+    async getGate(address: string, gateId: number) {}
+    async addGate(name: string, token: string, flowRate: number) {}
+    async deleteGate(gateId: string) {}
 }
 
 export type {Gate, Flow, IBackend}
