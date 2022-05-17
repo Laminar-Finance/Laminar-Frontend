@@ -4,7 +4,6 @@ import { WalletContextProvider } from "../context/WalletProvider";
 import AuthenticatedRoute from "../components/AuthenticatedRoute";
 
 function MyApp({ Component, pageProps }) {
-  console.log(Component.protected);
   return (
     <WalletContextProvider>
       {Component.protected ? (
