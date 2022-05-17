@@ -53,7 +53,7 @@ export default function Home() {
             >
               Learn More
             </a>
-            <button onClick={connect}>
+            <button onClick={() => connect(walletState)}>
               hatersgonnahates
             </button>
           </div>

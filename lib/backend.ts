@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { recoverAddress } from "ethers/lib/utils";
 import { Client } from "urql";
 
@@ -22,14 +23,14 @@ interface Flow {
 interface IBackend {
     getGates(address: string): Promise<Gate[]>, 
     getGate(address: string, gateId: number),
-    addGate(name: string, token: string, flowRate: number),
+    addGate(signer: any, name: string, token: string, flowRate: number),
     deleteGate(gateId: string),
 }
 
-class Backend implements IBackend {
+export class Backend implements IBackend {
     getStreamsQuery = `
-    query getAccounts($receiver: String) {
-        streams(where: {receiver: $receiver}) {
+    query GetStreams($r: String) {
+        streams(where: {receiver: $r}) {
           id
           streamedUntilUpdatedAt
           updatedAtBlockNumber
@@ -51,22 +52,30 @@ class Backend implements IBackend {
         }
       }
     `;
-    
 
     gql: Client;
     pr: any;
-    constructor(graphQLClient: Client, prContract: any) {
+    constructor(graphQLClient: Client, prContract: ethers.Contract) {
         this.gql = graphQLClient;
         this.pr = prContract;
     }
 
     async getGates(receiverAddress: string): Promise<Gate[]> {
-        const response = await this.gql.query(this.getStreamsQuery, {receiver: receiverAddress}).toPromise(); 
+        console.log("address", receiverAddress);
+        const response = await this.gql.query(
+            this.getStreamsQuery, 
+            {r: receiverAddress}
+        ).toPromise(); 
+        console.log("response", response);
         
         const streams = response.data.streams;
         const gates: Gate[] = [];
 
+        console.log("streams", streams);
+
         const rawGates = await this.pr.getGates(receiverAddress);
+
+        console.log("raw gates", rawGates);
 
         for (let index = 0; index < rawGates.length; index++) {
             const g = rawGates[index];
@@ -79,7 +88,6 @@ class Backend implements IBackend {
                 gateAddress: ""
             })   
         }       
-
 
         return gates;
     }
@@ -110,8 +118,10 @@ class Backend implements IBackend {
     }
 
     async getGate(address: string, gateId: number) {}
-    async addGate(name: string, token: string, flowRate: number) {}
+    async addGate(signer: any, name: string, token: string, flowRate: number) {
+        await this.pr.connect(signer).addGate(name, flowRate);
+    }
     async deleteGate(gateId: string) {}
 }
 
-export type {Gate, Flow, IBackend}
+export type {Gate, Flow, IBackend};
