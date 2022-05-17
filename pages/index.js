@@ -1,8 +1,8 @@
 import React from "react";
 import GenericLayout from "../layouts/GenericLayout";
 import { useWalletProvider } from "../context/WalletProvider";
-import { connect } from "../context/LaminarCore";
 import NextLink from "next/link";
+import { addGate, checkIn, getGates, loadDai } from "../lib/gate";
 
 export default function Home() {
   const { connectWallet, disconnectWallet, isConnected, walletState } =
@@ -53,8 +53,17 @@ export default function Home() {
             >
               Learn More
             </a>
-            <button onClick={() => connect(walletState)}>
-              hatersgonnahates
+            <button onClick={() => getGates(walletState)}>
+              get gates
+            </button>
+            <button onClick={() => loadDai(walletState)}>
+              Load Dai
+            </button>
+            <button onClick={() => checkIn(walletState)}>
+              check in
+            </button>
+            <button onClick={() => addGate(walletState)}>
+              add gate
             </button>
           </div>
         </div>

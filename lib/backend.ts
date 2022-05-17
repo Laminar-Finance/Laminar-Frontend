@@ -25,6 +25,7 @@ interface IBackend {
     getGates(address: string): Promise<Gate[]>, 
     getGate(address: string, gateId: number),
     addGate(signer: Signer, name: string, token: string, flowRate: number),
+    checkIn(signer: Signer, gateId: string),
     deleteGate(gateId: string),
 }
 
@@ -103,8 +104,7 @@ export class Backend implements IBackend {
                 
                 console.log("comparing", stream.sender, userAddress);
 
-                // TODO: add some kind of test to ensure that the stream is currenlty active
-                if (stream.sender.id == userAddress) {
+                if (stream.sender.id == userAddress && stream.currentFlowRate != "0") {
                     gateFlows.push({
                         payer: userAddress,
                         startTimestamp: stream.createdAtTimestamp,
@@ -122,6 +122,9 @@ export class Backend implements IBackend {
     async getGate(address: string, gateId: number) {}
     async addGate(signer: Signer, name: string, token: string, flowRate: number) {
         await this.pr.connect(signer).addGate(name, flowRate);
+    }
+    async checkIn(signer: Signer, gateId: string) {
+        await this.pr.connect(signer).checkIn("11");
     }
     async deleteGate(gateId: string) {}
 }
