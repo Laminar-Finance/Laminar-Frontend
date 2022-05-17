@@ -11,7 +11,7 @@ const GateList = (props) => {
 
     return ( 
         <>
-            <div className='card'>
+            <div className={`card ${styles.gateList}`}>
                 <h1>Gates</h1>
                 {gates.map((gate, index) => {
                     return (

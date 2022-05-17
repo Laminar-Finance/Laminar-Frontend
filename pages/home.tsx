@@ -62,10 +62,14 @@ const Home = () => {
     <>
       <GenericLayout>
         <div className="home-container">
-          {balenceCompenent}
-          {gateListComponent}
-          {netFlowComponent}
-          <NextLink href="/home">Protected Page</NextLink>
+          <div className="container">
+            {balenceCompenent}
+            {netFlowComponent}
+          </div>
+
+          <div className="container">
+            {gateListComponent}
+          </div>
         </div>
       </GenericLayout>
     </>

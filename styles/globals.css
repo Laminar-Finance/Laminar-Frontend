@@ -8,8 +8,22 @@
     font-size: large;
     padding: 1px;
     overflow: wrap;
+    display: flex;
+    flex-direction: row;
     min-width: 100vh;
     min-height: 100vh;
+}
+
+.container .left{
+    margin-right: auto;
+    justify-content: left;
+    align-items: left;
+}
+
+.container .right{
+    margin-left: auto;
+    justify-content: right;
+    align-items: right;
 }
 
 .card {
