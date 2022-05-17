@@ -2,7 +2,6 @@ import React from "react";
 import GenericLayout from "../layouts/GenericLayout";
 import { useWalletProvider } from "../context/WalletProvider";
 import NextLink from "next/link";
-import GenericLayout from "../layouts/GenericLayout";
 
 
 export default function Home() {
