@@ -1,11 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { ethers } from "ethers";
-import React, { useCallback, useReducer, useState, useEffect } from "react";
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+import React from "react";
+import GenericLayout from "../layouts/GenericLayout";
 import { useWalletProvider } from "../context/WalletProvider";
 import { connect } from "../context/LaminarCore";
 import NextLink from "next/link";
@@ -15,7 +9,7 @@ export default function Home() {
     useWalletProvider();
 
   return (
-    <>
+    <GenericLayout>
       <section className="px-2 pt-32 bg-white md:px-0">
         <div className="container items-center max-w-6xl px-5 mx-auto space-y-6 text-center">
           <h1 className="text-4xl font-extrabold tracking-tight text-left text-gray-900 sm:text-5xl md:text-6xl md:text-center">
@@ -68,6 +62,6 @@ export default function Home() {
           <img src="https://cdn.devdojo.com/images/november2020/hero-image.png" />
         </div>
       </section>
-    </>
+    </GenericLayout>
   );
 }

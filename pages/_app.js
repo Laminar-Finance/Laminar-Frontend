@@ -5,17 +5,16 @@ import AuthenticatedRoute from "../components/AuthenticatedRoute";
 import GenericLayout from "../layouts/GenericLayout";
 
 function MyApp({ Component, pageProps }) {
+  console.log(Component.protected);
   return (
     <WalletContextProvider>
-      <GenericLayout>
-        {Component.protected ? (
-          <AuthenticatedRoute>
-            <Component {...pageProps} />
-          </AuthenticatedRoute>
-        ) : (
+      {Component.protected ? (
+        <AuthenticatedRoute>
           <Component {...pageProps} />
-        )}
-      </GenericLayout>
+        </AuthenticatedRoute>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </WalletContextProvider>
   );
 }
