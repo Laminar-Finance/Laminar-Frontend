@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { PAYMENT_RECEIVER } from "../contracts";
-import WalletState from "../types/wallet";
+import { WalletState } from "../types/wallet";
 
 export const addGate = (walletState, name, flowRate) => {
   if (!walletState) {
