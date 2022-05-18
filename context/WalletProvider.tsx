@@ -1,21 +1,21 @@
+import { ethers } from "ethers";
 import * as React from "react";
 import { useState, useReducer, useEffect } from "react";
 import Web3Modal from "web3modal";
+import useInterval from "../hooks/useInterval";
+import { loadSuperToken } from "../lib/SuperToken";
 import {
   connectWallet,
   disconnectWallet,
+  getGates,
   handleAccountsChanged,
   handleChainChange,
   handleDisconnect,
 } from "../lib/wallet";
-// import {
-//   handleAccountsChanged,
-//   handleChainChange,
-//   handleDisconnect,
-// } from "../lib/wallet";
 import {
   providerOptions,
   REDUCER_ACTION,
+  supportedTokens,
   WalletProviderProps,
   WalletProviderState,
   WalletState,
@@ -50,6 +50,36 @@ const WalletProviderContext = React.createContext<
 const WalletContextProvider = ({ children }: WalletProviderProps) => {
   const [state, dispatch] = useReducer(WalletReducer, null);
   const [web3Modal, setWeb3Modal] = useState(null);
+  const [gates, setGates] = useState(null);
+  const [currentToken, setCurrentToken] = useState<supportedTokens>("fDAIx");
+  const [currentTokenBalance, setCurrentTokenBalance] = useState(0);
+
+  useEffect(() => {
+    if (!state) {
+      return;
+    }
+    loadSuperToken(state, "fDAIx").then((st) => {
+      st.balanceOf({
+        account: state.address,
+        providerOrSigner: state.web3Provider,
+      }).then((balance) => {
+        setCurrentTokenBalance(parseFloat(ethers.utils.formatEther(balance)));
+      });
+    });
+  }, [state, currentToken]);
+
+  // This fires the first time we connect our wallet or change address
+  useEffect(() => {
+    if (state) {
+      getGates(state, setGates);
+    }
+  }, [state]);
+
+  // We also set a regular polling interval
+  useInterval(() => {
+    console.log("polling now....");
+    getGates(state, setGates);
+  }, 10000);
 
   // On WebApp Boot up, we can simply configure the Web3Modal
   useEffect(() => {
@@ -91,6 +121,9 @@ const WalletContextProvider = ({ children }: WalletProviderProps) => {
     dispatch,
     connectWallet: connectWallet(web3Modal, dispatch),
     disconnectWallet: disconnectWallet(web3Modal, state, dispatch),
+    userGates: gates,
+    currentToken,
+    currentTokenBalance,
   };
 
   return (

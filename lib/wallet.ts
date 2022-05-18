@@ -1,4 +1,6 @@
 import { ethers } from "ethers";
+import { PaymentReciever } from "./PaymentReciever";
+import { Gate, SuperGate } from "./SuperGate";
 
 export const handleAccountsChanged = (dispatch) => {
   return (accounts: string[]) => {
@@ -40,20 +42,24 @@ export const connectWallet = (web3Modal, dispatch) => {
 
     const network = await web3Provider.getNetwork();
 
-    if(network.chainId != parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)){
+    if (network.chainId != parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {
       provider.request({
         method: "wallet_addEthereumChain",
-        params: [{
-            chainId: ethers.utils.hexValue(parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)),
+        params: [
+          {
+            chainId: ethers.utils.hexValue(
+              parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
+            ),
             rpcUrls: [process.env.NEXT_PUBLIC_RPC_URL],
             chainName: process.env.NEXT_PUBLIC_NETWORK,
             nativeCurrency: {
-                name: "MATIC",
-                symbol: "MATIC",
-                decimals: 18
+              name: "MATIC",
+              symbol: "MATIC",
+              decimals: 18,
             },
-            blockExplorerUrls: ["https://polygonscan.com/"]
-        }]
+            blockExplorerUrls: ["https://polygonscan.com/"],
+          },
+        ],
       });
     }
 
@@ -92,3 +98,13 @@ export const truncateWalletAddress = (address: string) => {
     address.substring(0, 6) + "..." + address.substring(address.length - 6)
   );
 };
+
+export async function getGates(walletState, setGates) {
+  const g = await PaymentReciever.getGates(walletState);
+  if (g) {
+    SuperGate.loadGateInfo(walletState, g).then((gates: Gate[]) => {
+      console.log(gates);
+      setGates(gates);
+    });
+  }
+}

@@ -1,6 +1,7 @@
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
+import { Gate } from "../lib/SuperGate";
 
 export type WalletState = {
   provider: any;
@@ -36,12 +37,17 @@ export type REDUCER_ACTION =
       type: "RESET_WEB3_PROVIDER";
     };
 
+export type supportedTokens = "fDAIx";
+
 export type WalletProviderState = {
   walletState: WalletState;
   isConnected: boolean;
   dispatch: (action: REDUCER_ACTION) => void;
   connectWallet: () => void;
   disconnectWallet: () => void;
+  userGates: Gate[] | null;
+  currentToken: supportedTokens;
+  currentTokenBalance: number;
 };
 
 export type WalletProviderProps = {
