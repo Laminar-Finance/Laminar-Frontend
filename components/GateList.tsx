@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
-import { PaymentReciever } from "../lib/PaymentReciever";
 import { Spinner } from "@chakra-ui/react";
-import styles from "./GateList/GateList.module.css";
-import { SuperGate } from "../lib/SuperGate";
-import UseInterval from "../hooks/useInterval";
-import useInterval from "../hooks/useInterval";
 import GateCard from "./GateCard";
 
 const GateList = () => {
