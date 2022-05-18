@@ -5,6 +5,7 @@ import { PaymentReciever } from "../lib/PaymentReciever";
 import { SuperGate } from "../lib/SuperGate";
 
 const Balance = () => {
+  //Total gate flows should be displayed in the net flows, The balance component should be used to display the balance of the token in the wallet
   const [tokenName, setTokenName] = useState("fDAI");
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -22,12 +23,12 @@ const Balance = () => {
   }
 
   useEffect(() => {
-    getGates();
+    //getGates();
   }, []);
 
   useInterval(() => {
-    console.log("Getting Data now ....");
-    getGates();
+    //console.log("Getting Data now ....");
+    //getGates();
   }, 10000);
 
   return (
