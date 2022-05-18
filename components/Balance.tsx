@@ -2,7 +2,7 @@ import { useInterval } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
 
-const Balance = (props) => {
+const Balance = () => {
   const {
     userGates,
     currentToken,
