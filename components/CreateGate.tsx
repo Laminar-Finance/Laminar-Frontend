@@ -95,7 +95,7 @@ const CreateGate = () => {
       <FormLabel htmlFor="timehorizon">Time Horizon</FormLabel>
       <Select
         id="timehorizon"
-        onChange={(e) => setTimeHorizon(e.target.value)}
+        onChange={(e) => setTimeHorizon(e.target.value as "s" | "m" | "h")}
         value={timeHorizon}
         placeholder="Select Time Horizon"
       >
