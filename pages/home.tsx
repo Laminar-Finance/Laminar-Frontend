@@ -34,7 +34,7 @@ const Home = () => {
     balance: balance,
     tokenName: token,
   };
-  const balenceCompenent = <Balance {...balanceProps}></Balance>;
+  // const balenceCompenent = <Balance {...balanceProps}></Balance>;
 
   const netFlowProps = {
     netFlow: netFlow,
