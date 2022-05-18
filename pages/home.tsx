@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Home.module.css";
 import NextLink from "next/link";
-import Balance from "../components/Balance/Balance";
+import Balance from "../components/Balance";
 import GateList from "../components/GateList";
 import NetFlow from "../components/NetFlow";
 import GenericLayout from "../layouts/GenericLayout";

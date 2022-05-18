@@ -1,7 +1,6 @@
 import { useInterval } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
-import styles from "./Balance/Balance.module.css";
 
 const Balance = (props) => {
   const {
@@ -44,7 +43,6 @@ const Balance = (props) => {
             font: "normal normal bold 60px/73px Montserrat",
             color: "green",
           }}
-          className={styles.balance}
         >
           {balance}
         </div>
