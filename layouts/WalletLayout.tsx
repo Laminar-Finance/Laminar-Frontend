@@ -11,7 +11,7 @@ const WalletLayout = ({ children }) => {
   } = useWalletProvider();
   return (
     <div className="col-span-7 pt-2 bg-color">
-      <div className="flex justify-between border-b-2">
+      <div className="flex justify-between border-b-2 px-10">
         <div className="pl-4 pb-4 col-span-1 flex flex-col font-medium text-white ">
           <p className="inline-block font-sans text-lg text-left font-extrabold ">
             Personal Wallet

@@ -3,7 +3,8 @@ import "../styles/Home.module.css";
 import NextLink from "next/link";
 import Balance from "../components/Balance";
 import GateList from "../components/GateList";
-import NetFlow from "../components/NetFlow/NetFlow";
+import NetFlowOld from "../components/NetFlow/NetFlow";
+import NetFlow from "../components/NetFlow";
 import GenericLayout from "../layouts/GenericLayout";
 import { PaymentReciever } from "../lib/PaymentReciever";
 import { useWalletProvider } from "../context/WalletProvider";
@@ -20,8 +21,6 @@ const Home = () => {
   const [netFlow, setNetFlow] = useState("");
   const [netIncoming, setNetIncoming] = useState("");
   const [netOutgoing, setNetOutgoing] = useState("");
-  const [streamToken, setStreamToken] = useState("");
-  const [streamBalance, setStreamBalance] = useState("");
 
   const [token, setToken] = useState("");
   const [balance, setBalance] = useState("");
@@ -42,43 +41,7 @@ const Home = () => {
     netOutgoing: netOutgoing,
     tokenName: token,
   };
-  const netFlowComponent = <NetFlow {...netFlowProps}></NetFlow>;
-
-  useEffect(() => {
-    setNetFlow("+0.00");
-    setNetIncoming("+0.00");
-    setNetOutgoing("+0.00");
-    setStreamToken("DAIX");
-    setStreamBalance("10.00000000");
-
-    setToken("DAI");
-    setBalance("100.00000000");
-    setGateList([
-      {
-        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
-        name: "24/7 Fitness Studio",
-        flow: "10 DAIX / hr",
-        open: true,
-      },
-      {
-        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
-        name: "Airnbnb Rental",
-        flow: "5 DAIX / hr",
-        open: true,
-      },
-      {
-        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
-        name: "Boat Rental",
-        flow: "10 DAIX / hr",
-        open: false,
-      },
-    ]);
-  }, []);
-
-  useEffect(() => {
-    if (g != null) {
-    }
-  }, [g]);
+  const netFlowComponent = <NetFlowOld {...netFlowProps}></NetFlowOld>;
 
   const createGate = async (event) => {
     event.preventDefault();
@@ -102,7 +65,8 @@ const Home = () => {
         <div className="home-container w-screen flex justify-between ">
           <div className="container">
             <Balance />
-            {netFlowComponent}
+            {/* {netFlowComponent} */}
+            <NetFlow />
           </div>
 
           <div

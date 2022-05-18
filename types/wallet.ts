@@ -1,6 +1,7 @@
 import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
+import { Gate } from "../lib/SuperGate";
 
 export type WalletState = {
   provider: any;
@@ -42,6 +43,7 @@ export type WalletProviderState = {
   dispatch: (action: REDUCER_ACTION) => void;
   connectWallet: () => void;
   disconnectWallet: () => void;
+  userGates: Gate[] | null;
 };
 
 export type WalletProviderProps = {
