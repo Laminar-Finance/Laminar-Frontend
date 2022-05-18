@@ -42,8 +42,8 @@ const WalletLayout = ({ children }) => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center mt-5">
-        <div className="max-w-7xl">{children}</div>
+      <div className="flex items-center justify-center mt-5 px-20">
+        {children}
       </div>
     </div>
   );

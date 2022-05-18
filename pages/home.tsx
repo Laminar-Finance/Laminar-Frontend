@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Home.module.css";
 import NextLink from "next/link";
-import Balance from "../components/Balance/Balance";
-import GateList from "../components/GateList/GateList";
+import Balance from "../components/Balance";
+import GateList from "../components/GateList";
 import NetFlow from "../components/NetFlow/NetFlow";
 import GenericLayout from "../layouts/GenericLayout";
 import { PaymentReciever } from "../lib/PaymentReciever";
 import { useWalletProvider } from "../context/WalletProvider";
-import { SuperGate } from "../lib/SuperGate";
+
 import WalletLayout from "../layouts/WalletLayout";
+import CreateGate from "../components/CreateGate";
 
 const Home = () => {
   const { walletState } = useWalletProvider();
@@ -43,16 +44,6 @@ const Home = () => {
   };
   const netFlowComponent = <NetFlow {...netFlowProps}></NetFlow>;
 
-  const gateListProps = {
-    gateList: gateList,
-  };
-  const gateListComponent = <GateList {...gateListProps}></GateList>;
-
-  async function getGates() {
-    const g = await PaymentReciever.getGates(walletState);
-    setG(g);
-  }
-
   useEffect(() => {
     setNetFlow("+0.00");
     setNetIncoming("+0.00");
@@ -82,15 +73,10 @@ const Home = () => {
         open: false,
       },
     ]);
-
-    getGates();
   }, []);
 
   useEffect(() => {
     if (g != null) {
-      SuperGate.loadGateInfo(walletState, g).then((gates) => {
-        setGateList(gates);
-      });
     }
   }, [g]);
 
@@ -113,31 +99,21 @@ const Home = () => {
   return (
     <>
       <WalletLayout>
-        <div className="home-container">
+        <div className="home-container w-screen flex justify-between ">
           <div className="container">
-            {balenceCompenent}
+            <Balance />
             {netFlowComponent}
           </div>
 
-          <div className="container">{gateListComponent}</div>
-
-          <form onSubmit={createGate}>
-            <label>
-              Name:
-              <input type="text" name="name" id="gate-name" required />
-            </label>
-            <label>
-              Flow rate:
-              <input type="number" name="flowRate" id="flow-rate" required />
-            </label>
-            <label>
-              Token:
-              <select name="superToken" id="super-token" required>
-                <option value="fDAIx">fDAIx</option>
-              </select>
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
+          <div
+            style={{
+              minWidth: "400px",
+            }}
+            className="flex flex-col"
+          >
+            <CreateGate />
+            <GateList />
+          </div>
         </div>
       </WalletLayout>
     </>
