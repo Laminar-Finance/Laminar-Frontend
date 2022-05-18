@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Home.module.css";
 import NextLink from "next/link";
-import Balance from "../components/Balance";
+import Balance from "../components/Balance/Balance";
 import GateList from "../components/GateList";
 import NetFlow from "../components/NetFlow/NetFlow";
 import GenericLayout from "../layouts/GenericLayout";
 import { PaymentReciever } from "../lib/PaymentReciever";
 import { useWalletProvider } from "../context/WalletProvider";
+import {loadSuperToken } from "../lib/SuperToken";
+import {ethers} from "ethers";
 
 import WalletLayout from "../layouts/WalletLayout";
 import CreateGate from "../components/CreateGate";
@@ -73,6 +75,14 @@ const Home = () => {
         open: false,
       },
     ]);
+
+   
+    loadSuperToken(walletState, "fDAIx").then((st) => {
+      st.balanceOf({account: walletState.address, providerOrSigner: walletState.web3Provider}).then((balance) => {
+        console.log("balance", balance);
+        setBalance(ethers.utils.formatEther(balance));
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -101,7 +111,7 @@ const Home = () => {
       <WalletLayout>
         <div className="home-container w-screen flex justify-between ">
           <div className="container">
-            <Balance />
+            <Balance {...balanceProps}/>
             {netFlowComponent}
           </div>
 
