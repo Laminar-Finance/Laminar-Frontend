@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Home.module.css";
 import Balance from "../components/Balance";
 import GateList from "../components/GateList";
@@ -9,7 +9,8 @@ import WalletLayout from "../layouts/WalletLayout";
 import CreateGate from "../components/CreateGate";
 
 const Home = () => {
-  const { walletState } = useWalletProvider();
+  const [streamToken, setStreamToken] = useState("");
+  const [streamBalance, setStreamBalance] = useState("");
 
   return (
     <>
