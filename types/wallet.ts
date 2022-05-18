@@ -37,6 +37,8 @@ export type REDUCER_ACTION =
       type: "RESET_WEB3_PROVIDER";
     };
 
+export type supportedTokens = "fDAIx";
+
 export type WalletProviderState = {
   walletState: WalletState;
   isConnected: boolean;
@@ -44,6 +46,8 @@ export type WalletProviderState = {
   connectWallet: () => void;
   disconnectWallet: () => void;
   userGates: Gate[] | null;
+  currentToken: supportedTokens;
+  currentTokenBalance: number;
 };
 
 export type WalletProviderProps = {

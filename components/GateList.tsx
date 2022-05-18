@@ -6,6 +6,7 @@ import styles from "./GateList/GateList.module.css";
 import { SuperGate } from "../lib/SuperGate";
 import UseInterval from "../hooks/useInterval";
 import useInterval from "../hooks/useInterval";
+import GateCard from "./GateCard";
 
 const GateList = () => {
   const { userGates } = useWalletProvider();
@@ -21,12 +22,15 @@ const GateList = () => {
       ) : (
         <>
           {userGates.map((gate) => {
-            const { open, name, flow } = gate;
+            const { open, name, flow, address } = gate;
             return (
-              <div className="flex items-center justify-between">
-                <p>{name}</p>
-                <p>{open ? `${flow} DAIx/month` : "Closed"}</p>
-              </div>
+              <GateCard
+                address={address}
+                key={name}
+                open={open}
+                name={name}
+                flow={flow}
+              />
             );
           })}
         </>
