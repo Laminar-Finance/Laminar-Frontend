@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Home.module.css";
 import NextLink from "next/link";
 import Balance from "../components/Balance/Balance";
@@ -7,12 +7,13 @@ import NetFlow from "../components/NetFlow/NetFlow";
 import GenericLayout from "../layouts/GenericLayout";
 import { PaymentReciever } from "../lib/PaymentReciever";
 import { useWalletProvider } from "../context/WalletProvider";
-import {SuperGate} from "../lib/SuperGate";
+import { SuperGate } from "../lib/SuperGate";
+import WalletLayout from "../layouts/WalletLayout";
 
 const Home = () => {
   const { walletState } = useWalletProvider();
-  if(!walletState) {
-    return <div>Loading...</div>
+  if (!walletState) {
+    return <div>Loading...</div>;
   }
 
   const [netFlow, setNetFlow] = useState("");
@@ -28,12 +29,11 @@ const Home = () => {
 
   const [g, setG] = useState(null);
 
-
   const balanceProps = {
     balance: balance,
     tokenName: token,
   };
-  const balenceCompenent = <Balance {...balanceProps}></Balance>
+  const balenceCompenent = <Balance {...balanceProps}></Balance>;
 
   const netFlowProps = {
     netFlow: netFlow,
@@ -41,14 +41,14 @@ const Home = () => {
     netOutgoing: netOutgoing,
     tokenName: token,
   };
-  const netFlowComponent = <NetFlow {...netFlowProps}></NetFlow>
+  const netFlowComponent = <NetFlow {...netFlowProps}></NetFlow>;
 
   const gateListProps = {
     gateList: gateList,
-  }
-  const gateListComponent = <GateList {...gateListProps}></GateList>
+  };
+  const gateListComponent = <GateList {...gateListProps}></GateList>;
 
-  async function getGates(){
+  async function getGates() {
     const g = await PaymentReciever.getGates(walletState);
     setG(g);
   }
@@ -62,21 +62,33 @@ const Home = () => {
 
     setToken("DAI");
     setBalance("100.00000000");
-    setGateList(
-      [
-        {address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ", name: "24/7 Fitness Studio", flow: "10 DAIX / hr", open: true},
-        {address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ", name: "Airnbnb Rental", flow: "5 DAIX / hr", open: true},
-        {address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ", name: "Boat Rental", flow: "10 DAIX / hr", open: false}
-      ]
-    );
+    setGateList([
+      {
+        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
+        name: "24/7 Fitness Studio",
+        flow: "10 DAIX / hr",
+        open: true,
+      },
+      {
+        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
+        name: "Airnbnb Rental",
+        flow: "5 DAIX / hr",
+        open: true,
+      },
+      {
+        address: "0x62d97e208d97FBFc9eFb2236451619479B18557e ",
+        name: "Boat Rental",
+        flow: "10 DAIX / hr",
+        open: false,
+      },
+    ]);
 
     getGates();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
-    if(g != null){
-      SuperGate.loadGateInfo(walletState, g).then(gates => {
+    if (g != null) {
+      SuperGate.loadGateInfo(walletState, g).then((gates) => {
         setGateList(gates);
       });
     }
@@ -88,25 +100,26 @@ const Home = () => {
       name: event.target.name.value,
       flowRate: event.target.flowRate.value,
       superToken: event.target.superToken.value,
-    }
+    };
 
-    PaymentReciever.createGate(walletState, data.name, data.flowRate, data.superToken);
-
-  }
+    PaymentReciever.createGate(
+      walletState,
+      data.name,
+      data.flowRate,
+      data.superToken
+    );
+  };
 
   return (
     <>
-      <GenericLayout>
+      <WalletLayout>
         <div className="home-container">
           <div className="container">
             {balenceCompenent}
             {netFlowComponent}
           </div>
 
-          <div className="container">
-            {gateListComponent}
-          </div>
-          
+          <div className="container">{gateListComponent}</div>
 
           <form onSubmit={createGate}>
             <label>
@@ -115,7 +128,7 @@ const Home = () => {
             </label>
             <label>
               Flow rate:
-              <input type="number" name="flowRate" id="flow-rate" required/>
+              <input type="number" name="flowRate" id="flow-rate" required />
             </label>
             <label>
               Token:
@@ -125,10 +138,8 @@ const Home = () => {
             </label>
             <input type="submit" value="Submit" />
           </form>
-
-          
         </div>
-      </GenericLayout>
+      </WalletLayout>
     </>
   );
 };
