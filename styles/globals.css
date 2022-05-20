@@ -6,6 +6,14 @@
   background: #24022e 0% 0% no-repeat padding-box;
 }
 
+.dark-element {
+  background: #24022e 0% 0% no-repeat padding-box;
+}
+
+html {
+  background: #24022e 0% 0% no-repeat padding-box;
+}
+
 .home-container {
   background: #24022e 0% 0% no-repeat padding-box;
   color: aliceblue;
