@@ -36,10 +36,10 @@ export const connectWallet = (web3Modal, dispatch) => {
     // a Web3Provider. This will add on methods from ethers.js and
     // event listeners such as `.on()` will be different.
     const web3Provider = new ethers.providers.Web3Provider(provider);
-
+    
     const signer = web3Provider.getSigner();
     const address = await signer.getAddress();
-
+    
     const network = await web3Provider.getNetwork();
 
     if (network.chainId != parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)) {

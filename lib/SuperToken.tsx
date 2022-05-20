@@ -12,7 +12,8 @@ export async function loadSuperToken(walletState: WalletState, symbol: string) {
         networkName: "mumbai",
         provider: walletState.web3Provider
     });
-
+    
     let st = await sf.loadSuperToken(symbol);
+    console.log("loaded super token " +  symbol);
     return st;
 }

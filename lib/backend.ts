@@ -72,11 +72,7 @@ export class Backend implements IBackend {
         const streams = response.data.streams;
         const gates: Gate[] = [];
 
-        console.log("streams", streams);
-
         const rawGates = await this.pr.getGates(receiverAddress);
-
-        console.log("raw gates", rawGates);
 
         for (let index = 0; index < rawGates.length; index++) {
             const g = rawGates[index];

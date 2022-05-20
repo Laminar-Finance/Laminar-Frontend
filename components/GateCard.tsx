@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useWalletProvider } from "../context/WalletProvider";
-import { PaymentReciever } from "../lib/PaymentReciever";
 
 type GateCardProps = {
   open: boolean;
