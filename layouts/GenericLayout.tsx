@@ -8,11 +8,11 @@ const GenericLayout = ({ children }) => {
     useWalletProvider();
   return (
     <>
-      <section className="w-full px-8 text-gray-700 bg-white body-font">
+      <section className="w-full px-8 text-gray-700 bg-white body-font dark-element">
         <div className="container flex flex-col items-center justify-between py-5 mx-auto max-w-7xl md:flex-row">
           <div className="flex items-center">
             <NextLink href="/">
-              <span className="inline-block font-sans text-2xl font-extrabold text-left text-black no-underline bg-transparent cursor-pointer focus:no-underline">
+              <span className="inline-block font-sans text-2xl font-extrabold text-left text-white no-underline bg-transparent cursor-pointer focus:no-underline">
                 Laminar Finance
               </span>
             </NextLink>
@@ -44,7 +44,7 @@ const GenericLayout = ({ children }) => {
           </div>
         </div>
       </section>
-      <main className="flex items-center justify-center">
+      <main className="flex items-center justify-center dark-element">
         <div className="w-full max-w-7xl">{children}</div>
       </main>
     </>
