@@ -9,6 +9,8 @@ import WalletLayout from "../layouts/WalletLayout";
 import CreateGate from "../components/CreateGate";
 
 const Home = () => {
+  const {walletState} = useWalletProvider();
+  console.log(walletState)
   const [streamToken, setStreamToken] = useState("");
   const [streamBalance, setStreamBalance] = useState("");
 

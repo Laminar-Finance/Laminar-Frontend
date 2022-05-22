@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
 import { Spinner } from "@chakra-ui/react";
 import GateCard from "./GateCard";
+import CheckInButton from "./CheckInButton";
 
 const GateList = () => {
   const { userGates } = useWalletProvider();
@@ -20,11 +21,7 @@ const GateList = () => {
             const { open, name, flow, address } = gate;
             return (
               <GateCard
-                address={address}
-                key={name}
-                open={open}
-                name={name}
-                flow={flow}
+                gate ={gate}
               />
             );
           })}

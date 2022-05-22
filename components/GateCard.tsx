@@ -1,21 +1,27 @@
 import React, { useEffect } from "react";
 import { useWalletProvider } from "../context/WalletProvider";
 import { PaymentReciever } from "../lib/PaymentReciever";
+import { Gate } from "../lib/SuperGate";
+import {
+  Button,
+  
+} from "@chakra-ui/react";
+import NextLink from "next/link";
 
-type GateCardProps = {
-  open: boolean;
-  name: string;
-  flow: number;
-  address: string;
-};
-
-const GateCard = ({ name, open, flow, address }: GateCardProps) => {
+const GateCard = ({ gate }: { gate: Gate }) => {
   const { walletState } = useWalletProvider();
 
   return (
     <div className="flex items-center justify-between">
-      <p>{name}</p>
-      <p>{open ? `${flow} DAIx/second` : "Closed"}</p>
+      <p>{gate.name}</p>
+
+      <p>{open ? `${gate.flow} DAIx/second` : "Closed"}</p>
+      {open && 
+        <NextLink href={`/kiosk/${gate.address}`}>
+          <Button colorScheme="blue" mr={3}>
+            Kiosk
+          </Button>
+        </NextLink>}
     </div>
   );
 };
