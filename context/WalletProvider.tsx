@@ -51,7 +51,7 @@ const WalletContextProvider = ({ children }: WalletProviderProps) => {
   const [state, dispatch] = useReducer(WalletReducer, null);
   const [web3Modal, setWeb3Modal] = useState(null);
   const [gates, setGates] = useState(null);
-  const [currentToken, setCurrentToken] = useState<supportedTokens>("fDAIx");
+  const [currentToken] = useState<supportedTokens>("fDAIx");
   const [currentTokenBalance, setCurrentTokenBalance] = useState(0);
 
   useEffect(() => {
@@ -77,9 +77,11 @@ const WalletContextProvider = ({ children }: WalletProviderProps) => {
 
   // We also set a regular polling interval
   useInterval(() => {
-    console.log("polling now....");
-    getGates(state, setGates);
-  }, 10000);
+    if (state) {
+      console.log("polling now....");
+      getGates(state, setGates);
+    }
+  }, 3000);
 
   // On WebApp Boot up, we can simply configure the Web3Modal
   useEffect(() => {
